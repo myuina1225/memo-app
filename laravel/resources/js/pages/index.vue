@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import Welcome from "../features/Welcome.vue";
+import Header from "../components/Header.vue";
+import MemoForm from "../components/MemoForm.vue";
 </script>
 
 <template>
-  <Welcome />
+  <Header />
+  <MemoForm />
 </template>
