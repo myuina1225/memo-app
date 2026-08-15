@@ -5,6 +5,18 @@ import TextareaForm from './TextareaForm.vue';
 import Button from './Button.vue';
 
 const newMemo = ref('');
+
+const addMemo = async () => {
+  if (!newMemo.value) return;
+
+  await fetch('/api/memos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content: newMemo.value }),
+  });
+
+  newMemo.value = '';
+};
 </script>
 
 <template>
@@ -15,9 +27,9 @@ const newMemo = ref('');
     </h2>
 
     <div class="space-y-4">
-      <TextareaForm v-model="newMemo" />
+      <TextareaForm v-model="newMemo" @keydown.enter.exact="addMemo" />
 
-      <Button :disabled="!newMemo" />
+      <Button :disabled="!newMemo" @click="addMemo" />
     </div>
   </div>
 </template>
