@@ -11,6 +11,11 @@ const fetchMemos = async () => {
   memos.value = await response.json();
 };
 
+const deleteMemo = async (id: number) => {
+  await fetch(`/api/memos/${id}`, { method: 'DELETE' });
+  fetchMemos();
+};
+
 onMounted(fetchMemos);
 </script>
 
@@ -18,6 +23,6 @@ onMounted(fetchMemos);
   <Header />
   <div class="max-w-2xl mx-auto px-6 py-8">
     <MemoForm @saved="fetchMemos" />
-    <MemoList :memos="memos" />
+    <MemoList :memos="memos" @trashed="deleteMemo" />
   </div>
 </template>
