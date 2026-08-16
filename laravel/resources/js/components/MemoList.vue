@@ -2,10 +2,9 @@
 import DocumentSvg from './svgs/DocumentSvg.vue';
 import MemoItem from './MemoItem.vue';
 
-const mockMemos = [
-  { id: 1, content: 'Vue.jsの基本構文を復習する', created_at: '2026-08-10 10:30' },
-  { id: 2, content: 'Laravelのルーティングについて調べる', created_at: '2026-08-10 09:15' },
-];
+defineProps<{
+  memos: { id: number; content: string; created_at: string }[];
+}>();
 </script>
 
 <template>
@@ -16,13 +15,13 @@ const mockMemos = [
         保存されたメモ
       </h2>
       <span class="text-sm text-gray-500 bg-orange-100 px-3 py-1 rounded-full">
-        {{ mockMemos.length }}件
+        {{ memos.length }}件
       </span>
     </div>
 
     <div class="space-y-4">
       <MemoItem
-        v-for="memo in mockMemos"
+        v-for="memo in memos"
         :key="memo.id"
         :content="memo.content"
         :created-at="memo.created_at"
