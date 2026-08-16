@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class MemoController extends Controller
 {
+    public function index()
+    {
+        return Memo::all();
+    }
+
     public function store(Request $request)
     {
         $memo = Memo::create([

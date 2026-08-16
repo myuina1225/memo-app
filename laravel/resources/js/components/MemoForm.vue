@@ -4,6 +4,10 @@ import PlusSvg from './svgs/PlusSvg.vue';
 import TextareaForm from './TextareaForm.vue';
 import Button from './Button.vue';
 
+const emit = defineEmits<{
+  saved: [];
+}>();
+
 const newMemo = ref('');
 
 const addMemo = async () => {
@@ -16,6 +20,7 @@ const addMemo = async () => {
   });
 
   newMemo.value = '';
+  emit('saved');
 };
 </script>
 
@@ -28,7 +33,6 @@ const addMemo = async () => {
 
     <div class="space-y-4">
       <TextareaForm v-model="newMemo" @keydown.enter.exact="addMemo" />
-
       <Button :disabled="!newMemo" @click="addMemo" />
     </div>
   </div>
