@@ -20,4 +20,12 @@ class MemoController extends Controller
 
         return response()->json($memo, 201);
     }
+
+    public function destroy($id)
+    {
+        $memo = Memo::find($id);
+        $memo->delete();
+
+        return response()->json(null, 204);
+    }
 }

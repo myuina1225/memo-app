@@ -5,6 +5,10 @@ import MemoItem from './MemoItem.vue';
 defineProps<{
   memos: { id: number; content: string; created_at: string }[];
 }>();
+
+const emit = defineEmits<{
+  trashed: [id: number];
+}>();
 </script>
 
 <template>
@@ -23,8 +27,10 @@ defineProps<{
       <MemoItem
         v-for="memo in memos"
         :key="memo.id"
+        :id="memo.id"
         :content="memo.content"
         :created-at="memo.created_at"
+        @trashed="emit('trashed', $event)"
       />
     </div>
   </div>
