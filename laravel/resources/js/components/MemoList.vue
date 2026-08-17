@@ -3,7 +3,7 @@ import DocumentSvg from './svgs/DocumentSvg.vue';
 import MemoItem from './MemoItem.vue';
 
 defineProps<{
-  memos: { id: number; content: string; created_at: string; is_favorite: boolean }[];
+  memos: { id: number; content: string; created_at: string; is_favorite: boolean; color: string }[];
 }>();
 
 const emit = defineEmits<{
@@ -33,6 +33,7 @@ const emit = defineEmits<{
         :content="memo.content"
         :created-at="memo.created_at"
         :is-favorite="memo.is_favorite"
+        :color="memo.color"
         @trashed="emit('trashed', $event)"
         @edited="(id, content) => emit('edited', id, content)"
         @favorited="(id, isFavorite) => emit('favorited', id, isFavorite)"

@@ -8,7 +8,15 @@ const emit = defineEmits<{
   saved: [];
 }>();
 
+const colors = [
+  { name: 'orange', class: 'bg-orange-300' },
+  { name: 'pink', class: 'bg-pink-300' },
+  { name: 'yellow', class: 'bg-yellow-300' },
+  { name: 'sky', class: 'bg-sky-300' },
+];
+
 const newMemo = ref('');
+const selectedColor = ref('orange');
 
 const addMemo = async () => {
   if (!newMemo.value) return;
@@ -16,7 +24,7 @@ const addMemo = async () => {
   await fetch('/api/memos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content: newMemo.value }),
+    body: JSON.stringify({ content: newMemo.value, color: selectedColor.value }),
   });
 
   newMemo.value = '';
@@ -38,6 +46,18 @@ const handleEnter = (event: KeyboardEvent) => {
 
     <div class="space-y-4">
       <TextareaForm v-model="newMemo" @keydown.enter.exact="handleEnter" />
+
+      <div class="flex gap-2">
+        <button
+          v-for="color in colors"
+          :key="color.name"
+          @click="selectedColor = color.name"
+          class="w-6 h-6 rounded-full transition-all"
+          :class="[color.class, selectedColor === color.name ? 'ring-2 ring-offset-2 ring-gray-400' : '']"
+          :title="color.name"
+        />
+      </div>
+
       <Button :disabled="!newMemo" @click="addMemo" />
     </div>
   </div>
