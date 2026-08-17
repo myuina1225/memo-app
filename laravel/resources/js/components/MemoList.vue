@@ -3,12 +3,13 @@ import DocumentSvg from './svgs/DocumentSvg.vue';
 import MemoItem from './MemoItem.vue';
 
 defineProps<{
-  memos: { id: number; content: string; created_at: string }[];
+  memos: { id: number; content: string; created_at: string; is_favorite: boolean }[];
 }>();
 
 const emit = defineEmits<{
   trashed: [id: number];
   edited: [id: number, content: string];
+  favorited: [id: number, isFavorite: boolean];
 }>();
 </script>
 
@@ -31,8 +32,10 @@ const emit = defineEmits<{
         :id="memo.id"
         :content="memo.content"
         :created-at="memo.created_at"
+        :is-favorite="memo.is_favorite"
         @trashed="emit('trashed', $event)"
         @edited="(id, content) => emit('edited', id, content)"
+        @favorited="(id, isFavorite) => emit('favorited', id, isFavorite)"
       />
     </div>
   </div>

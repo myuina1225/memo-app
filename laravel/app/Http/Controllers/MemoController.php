@@ -29,7 +29,14 @@ class MemoController extends Controller
             return response()->json(['message' => 'メモが見つかりません'], 404);
         }
 
-        $memo->content = $request->input('content');
+        if ($request->has('content')) {
+            $memo->content = $request->input('content');
+        }
+
+        if ($request->has('is_favorite')) {
+            $memo->is_favorite = $request->input('is_favorite');
+        }
+
         $memo->save();
 
         return response()->json($memo);
