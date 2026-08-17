@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import EditSvg from './svgs/EditSvg.vue';
 import TrashSvg from './svgs/TrashSvg.vue';
 
 const props = defineProps<{
@@ -9,24 +11,66 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   trashed: [id: number];
+  edited: [id: number, content: string];
 }>();
+
+const isEditing = ref(false);
+const editContent = ref('');
+
+const startEdit = () => {
+  editContent.value = props.content;
+  isEditing.value = true;
+};
+
+const save = () => {
+  if (!editContent.value) return;
+  emit('edited', props.id, editContent.value);
+  isEditing.value = false;
+};
+
+const cancel = () => {
+  isEditing.value = false;
+};
+
+const handleEnter = (event: KeyboardEvent) => {
+  if (event.isComposing) return;
+  save();
+};
 </script>
 
 <template>
   <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5 group">
     <div class="flex justify-between items-start gap-4">
       <div class="flex-1">
-        <p class="text-gray-800 whitespace-pre-wrap">{{ content }}</p>
+        <textarea
+          v-if="isEditing"
+          v-model="editContent"
+          rows="3"
+          class="w-full border border-primary-400 rounded-lg p-2 outline-none resize-none"
+          @keydown.enter.exact="handleEnter"
+          @keydown.esc="cancel"
+        />
+        <p v-else class="text-gray-800 whitespace-pre-wrap">{{ content }}</p>
+
         <p class="text-xs text-gray-400 mt-3">{{ createdAt }}</p>
       </div>
 
-      <button
-        @click="emit('trashed', props.id)"
-        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-        title="削除"
-      >
-        <TrashSvg />
-      </button>
+      <div v-if="!isEditing" class="flex gap-1 opacity-0 group-hover:opacity-100">
+        <button
+          @click="startEdit"
+          class="p-2 text-gray-400 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors"
+          title="編集"
+        >
+          <EditSvg />
+        </button>
+        <button
+          @click="emit('trashed', props.id)"
+          class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+          title="削除"
+        >
+          <TrashSvg />
+        </button>
+      </div>
     </div>
   </div>
 </template>

@@ -8,6 +8,7 @@ defineProps<{
 
 const emit = defineEmits<{
   trashed: [id: number];
+  edited: [id: number, content: string];
 }>();
 </script>
 
@@ -31,6 +32,7 @@ const emit = defineEmits<{
         :content="memo.content"
         :created-at="memo.created_at"
         @trashed="emit('trashed', $event)"
+        @edited="(id, content) => emit('edited', id, content)"
       />
     </div>
   </div>
