@@ -16,6 +16,15 @@ const deleteMemo = async (id: number) => {
   fetchMemos();
 };
 
+const editMemo = async (id: number, content: string) => {
+  await fetch(`/api/memos/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content }),
+  });
+  fetchMemos();
+};
+
 onMounted(fetchMemos);
 </script>
 
@@ -23,6 +32,6 @@ onMounted(fetchMemos);
   <Header />
   <div class="max-w-2xl mx-auto px-6 py-8">
     <MemoForm @saved="fetchMemos" />
-    <MemoList :memos="memos" @trashed="deleteMemo" />
+    <MemoList :memos="memos" @trashed="deleteMemo" @edited="editMemo" />
   </div>
 </template>

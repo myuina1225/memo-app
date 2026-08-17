@@ -22,6 +22,11 @@ const addMemo = async () => {
   newMemo.value = '';
   emit('saved');
 };
+
+const handleEnter = (event: KeyboardEvent) => {
+  if (event.isComposing) return;
+  addMemo();
+};
 </script>
 
 <template>
@@ -32,7 +37,7 @@ const addMemo = async () => {
     </h2>
 
     <div class="space-y-4">
-      <TextareaForm v-model="newMemo" @keydown.enter.exact="addMemo" />
+      <TextareaForm v-model="newMemo" @keydown.enter.exact="handleEnter" />
       <Button :disabled="!newMemo" @click="addMemo" />
     </div>
   </div>
