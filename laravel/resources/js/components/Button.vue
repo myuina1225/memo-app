@@ -15,6 +15,6 @@ defineProps<{
       : 'bg-primary-500 text-white hover:bg-primary-600'"
   >
     <PlusSvg />
-    メモを保存
+    タスクを保存
   </button>
 </template>

@@ -21,7 +21,7 @@ const emit = defineEmits<{
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold text-white flex items-center gap-2">
           <DocumentSvg class="text-white" />
-          保存されたメモ
+          タスク一覧
         </h2>
         <span class="text-sm text-white bg-white/20 px-3 py-1 rounded-full">
           {{ memos.length }}件
@@ -31,7 +31,7 @@ const emit = defineEmits<{
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="メモを検索..."
+        placeholder="タスクを検索..."
         class="w-full mb-4 px-3 py-2 rounded-lg border-none outline-none text-sm"
       />
 
