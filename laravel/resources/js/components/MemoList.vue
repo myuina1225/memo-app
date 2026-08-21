@@ -6,6 +6,8 @@ defineProps<{
   memos: { id: number; content: string; created_at: string; is_favorite: boolean; color: string }[];
 }>();
 
+const searchQuery = defineModel<string>('searchQuery');
+
 const emit = defineEmits<{
   trashed: [id: number];
   edited: [id: number, content: string];
@@ -26,7 +28,14 @@ const emit = defineEmits<{
         </span>
       </div>
 
-      <div class="space-y-4 min-h-24">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="メモを検索..."
+        class="w-full mb-4 px-3 py-2 rounded-lg border-none outline-none text-sm"
+      />
+
+      <TransitionGroup name="flip" tag="div" class="space-y-4 min-h-24" style="perspective: 800px;">
         <MemoItem
           v-for="memo in memos"
           :key="memo.id"
@@ -39,7 +48,7 @@ const emit = defineEmits<{
           @edited="(id, content) => emit('edited', id, content)"
           @favorited="(id, isFavorite) => emit('favorited', id, isFavorite)"
         />
-      </div>
+      </TransitionGroup>
     </div>
 
     <div class="chalkboard-shelf h-6 flex items-center justify-center gap-2 px-4">
