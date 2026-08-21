@@ -35,7 +35,7 @@ const emit = defineEmits<{
         class="w-full mb-4 px-3 py-2 rounded-lg border-none outline-none text-sm"
       />
 
-      <TransitionGroup name="flip" tag="div" class="space-y-4 min-h-24" style="perspective: 800px;">
+      <TransitionGroup name="flip" tag="div" class="chalk-divider min-h-24" style="perspective: 800px;">
         <MemoItem
           v-for="memo in memos"
           :key="memo.id"
