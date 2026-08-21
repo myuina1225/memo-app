@@ -18,11 +18,11 @@ const emit = defineEmits<{
   favorited: [id: number, isFavorite: boolean];
 }>();
 
-const colorClasses: Record<string, string> = {
-  orange: 'bg-orange-200',
-  pink: 'bg-pink-200',
-  yellow: 'bg-yellow-200',
-  sky: 'bg-sky-200',
+const chalkColors: Record<string, string> = {
+  orange: '#f5c99b',
+  pink: '#f5b8c4',
+  yellow: '#f5e9a8',
+  sky: '#b8dff5',
 };
 
 const isEditing = ref(false);
@@ -54,16 +54,13 @@ const toggleFavorite = () => {
 </script>
 
 <template>
-  <div
-    class="sticky-note rounded-lg p-5 group"
-    :class="colorClasses[color] || colorClasses.orange"
-  >
+  <div class="p-3">
     <div class="flex justify-between items-start gap-4">
       <div class="flex gap-3 flex-1">
         <button
           @click="toggleFavorite"
           class="shrink-0 p-1 rounded-lg transition-colors"
-          :class="isFavorite ? 'text-yellow-600' : 'text-white/60 hover:text-yellow-600'"
+          :class="isFavorite ? 'text-yellow-300' : 'text-white/40 hover:text-yellow-300'"
           title="お気に入り"
         >
           <StarSvg :filled="isFavorite" />
@@ -74,27 +71,33 @@ const toggleFavorite = () => {
             v-if="isEditing"
             v-model="editContent"
             rows="3"
-            class="w-full bg-white/50 border border-gray-400 rounded-lg p-2 outline-none resize-none"
+            class="w-full bg-white/10 border border-white/30 rounded-lg p-2 outline-none resize-none text-white"
             @keydown.enter.exact="handleEnter"
             @keydown.esc="cancel"
           />
-          <p v-else class="text-gray-800 whitespace-pre-wrap">{{ content }}</p>
+          <p
+            v-else
+            class="chalk-text whitespace-pre-wrap"
+            :style="{ color: chalkColors[color] || chalkColors.orange }"
+          >
+            {{ content }}
+          </p>
 
-          <p class="text-xs text-gray-600 mt-3">{{ createdAt }}</p>
+          <p class="text-xs text-white/40 mt-2">{{ createdAt }}</p>
         </div>
       </div>
 
       <div v-if="!isEditing" class="flex gap-1 opacity-0 group-hover:opacity-100">
         <button
           @click="startEdit"
-          class="p-2 text-gray-600 hover:text-primary-600 rounded-lg transition-colors"
+          class="p-2 text-white/60 hover:text-primary-300 rounded-lg transition-colors"
           title="編集"
         >
           <EditSvg />
         </button>
         <button
           @click="emit('trashed', props.id)"
-          class="p-2 text-gray-600 hover:text-red-600 rounded-lg transition-colors"
+          class="p-2 text-white/60 hover:text-red-300 rounded-lg transition-colors"
           title="削除"
         >
           <TrashSvg />
