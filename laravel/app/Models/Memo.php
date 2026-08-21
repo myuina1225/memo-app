@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Memo extends Model
 {
-    protected $fillable = ['content', 'is_favorite', 'color', 'is_done'];
+    protected $fillable = ['content', 'is_favorite', 'is_done', 'category_id'];
 }

@@ -4,19 +4,16 @@ import PlusSvg from './svgs/PlusSvg.vue';
 import TextareaForm from './TextareaForm.vue';
 import Button from './Button.vue';
 
+defineProps<{
+  categories: { id: number; name: string; color: string }[];
+}>();
+
 const emit = defineEmits<{
   saved: [];
 }>();
 
-const colors = [
-  { name: 'orange', class: 'bg-orange-300' },
-  { name: 'pink', class: 'bg-pink-300' },
-  { name: 'yellow', class: 'bg-yellow-300' },
-  { name: 'sky', class: 'bg-sky-300' },
-];
-
 const newMemo = ref('');
-const selectedColor = ref('orange');
+const selectedCategoryId = ref<number | null>(null);
 
 const addMemo = async () => {
   if (!newMemo.value) return;
@@ -24,7 +21,7 @@ const addMemo = async () => {
   await fetch('/api/memos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content: newMemo.value, color: selectedColor.value }),
+    body: JSON.stringify({ content: newMemo.value, category_id: selectedCategoryId.value }),
   });
 
   newMemo.value = '';
@@ -47,15 +44,23 @@ const handleEnter = (event: KeyboardEvent) => {
     <div class="space-y-4">
       <TextareaForm v-model="newMemo" @keydown.enter.exact="handleEnter" />
 
-      <div class="flex gap-2">
+      <div v-if="categories.length > 0" class="flex flex-wrap gap-2">
         <button
-          v-for="color in colors"
-          :key="color.name"
-          @click="selectedColor = color.name"
-          class="w-6 h-6 rounded-full transition-all"
-          :class="[color.class, selectedColor === color.name ? 'ring-2 ring-offset-2 ring-gray-400' : '']"
-          :title="color.name"
-        />
+          @click="selectedCategoryId = null"
+          class="text-xs px-2 py-1 rounded-full border"
+          :class="selectedCategoryId === null ? 'border-gray-400 bg-gray-100' : 'border-gray-200 text-gray-500'"
+        >
+          なし
+        </button>
+        <button
+          v-for="category in categories"
+          :key="category.id"
+          @click="selectedCategoryId = category.id"
+          class="text-xs px-2 py-1 rounded-full border"
+          :class="selectedCategoryId === category.id ? 'border-primary-400 bg-primary-50' : 'border-gray-200 text-gray-500'"
+        >
+          {{ category.name }}
+        </button>
       </div>
 
       <Button :disabled="!newMemo" @click="addMemo" />
