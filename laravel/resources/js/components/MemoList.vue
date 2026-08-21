@@ -3,7 +3,15 @@ import DocumentSvg from './svgs/DocumentSvg.vue';
 import MemoItem from './MemoItem.vue';
 
 defineProps<{
-  memos: { id: number; content: string; created_at: string; is_favorite: boolean; is_done: boolean; color: string }[];
+  memos: {
+    id: number;
+    content: string;
+    created_at: string;
+    is_favorite: boolean;
+    is_done: boolean;
+    category_name: string | null;
+    category_color: string | null;
+  }[];
 }>();
 
 const searchQuery = defineModel<string>('searchQuery');
@@ -45,7 +53,8 @@ const emit = defineEmits<{
           :created-at="memo.created_at"
           :is-favorite="memo.is_favorite"
           :is-done="memo.is_done"
-          :color="memo.color"
+          :category-name="memo.category_name"
+          :category-color="memo.category_color"
           @trashed="emit('trashed', $event)"
           @edited="(id, content) => emit('edited', id, content)"
           @favorited="(id, isFavorite) => emit('favorited', id, isFavorite)"

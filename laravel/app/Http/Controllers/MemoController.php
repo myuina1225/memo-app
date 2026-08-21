@@ -16,7 +16,7 @@ class MemoController extends Controller
     {
         $memo = Memo::create([
             'content' => $request->input('content'),
-            'color' => $request->input('color', 'orange'),
+            'category_id' => $request->input('category_id'),
         ]);
 
         return response()->json($memo, 201);
@@ -38,8 +38,8 @@ class MemoController extends Controller
             $memo->is_favorite = $request->input('is_favorite');
         }
 
-        if ($request->has('color')) {
-            $memo->color = $request->input('color');
+        if ($request->has('category_id')) {
+            $memo->category_id = $request->input('category_id');
         }
 
         if ($request->has('is_done')) {

@@ -10,7 +10,8 @@ const props = defineProps<{
   createdAt: string;
   isFavorite: boolean;
   isDone: boolean;
-  color: string;
+  categoryName: string | null;
+  categoryColor: string | null;
 }>();
 
 const emit = defineEmits<{
@@ -60,7 +61,7 @@ const toggleDone = () => {
 </script>
 
 <template>
-  <div class="p-3">
+  <div class="p-3 group">
     <div class="flex justify-between items-start gap-4">
       <div class="flex gap-3 flex-1">
         <button
@@ -82,6 +83,13 @@ const toggleDone = () => {
         </button>
 
         <div class="flex-1">
+          <span
+            v-if="categoryName"
+            class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-white/80 mb-1"
+          >
+            {{ categoryName }}
+          </span>
+
           <textarea
             v-if="isEditing"
             v-model="editContent"
@@ -94,7 +102,7 @@ const toggleDone = () => {
             v-else
             class="chalk-text whitespace-pre-wrap"
             :class="isDone ? 'line-through opacity-50' : ''"
-            :style="{ color: chalkColors[color] || chalkColors.orange }"
+            :style="{ color: chalkColors[categoryColor ?? ''] || '#e5e5e0' }"
           >
             {{ content }}
           </p>
@@ -106,7 +114,7 @@ const toggleDone = () => {
       <div v-if="!isEditing" class="flex gap-1 opacity-0 group-hover:opacity-100">
         <button
           @click="startEdit"
-          class="p-2 text-white/60 hover:text-primary-300 rounded-lg transition-colors"
+          class="p-2 text-white/60 hover:text-sky-300 rounded-lg transition-colors"
           title="編集"
         >
           <EditSvg />
