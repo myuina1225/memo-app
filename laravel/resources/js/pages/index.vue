@@ -5,9 +5,16 @@ import MemoForm from "../components/MemoForm.vue";
 import MemoList from "../components/MemoList.vue";
 
 const memos = ref([]);
+const searchQuery = ref('');
 
 const sortedMemos = computed(() => {
   return [...memos.value].sort((a, b) => b.is_favorite - a.is_favorite);
+});
+
+const filteredMemos = computed(() => {
+  return sortedMemos.value.filter((memo) =>
+    memo.content.includes(searchQuery.value)
+  );
 });
 
 const fetchMemos = async () => {
@@ -46,7 +53,8 @@ onMounted(fetchMemos);
   <div class="max-w-2xl mx-auto px-6 py-8">
     <MemoForm @saved="fetchMemos" />
     <MemoList
-      :memos="sortedMemos"
+      :memos="filteredMemos"
+      v-model:search-query="searchQuery"
       @trashed="deleteMemo"
       @edited="editMemo"
       @favorited="favoriteMemo"
