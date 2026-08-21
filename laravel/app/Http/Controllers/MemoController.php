@@ -42,6 +42,10 @@ class MemoController extends Controller
             $memo->color = $request->input('color');
         }
 
+        if ($request->has('is_done')) {
+            $memo->is_done = $request->input('is_done');
+        }
+
         $memo->save();
 
         return response()->json($memo);
