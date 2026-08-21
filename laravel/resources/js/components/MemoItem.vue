@@ -9,6 +9,7 @@ const props = defineProps<{
   content: string;
   createdAt: string;
   isFavorite: boolean;
+  isDone: boolean;
   color: string;
 }>();
 
@@ -16,6 +17,7 @@ const emit = defineEmits<{
   trashed: [id: number];
   edited: [id: number, content: string];
   favorited: [id: number, isFavorite: boolean];
+  toggledDone: [id: number, isDone: boolean];
 }>();
 
 const chalkColors: Record<string, string> = {
@@ -51,12 +53,25 @@ const handleEnter = (event: KeyboardEvent) => {
 const toggleFavorite = () => {
   emit('favorited', props.id, !props.isFavorite);
 };
+
+const toggleDone = () => {
+  emit('toggledDone', props.id, !props.isDone);
+};
 </script>
 
 <template>
   <div class="p-3">
     <div class="flex justify-between items-start gap-4">
       <div class="flex gap-3 flex-1">
+        <button
+          @click="toggleDone"
+          class="shrink-0 mt-1 w-5 h-5 border-2 rounded flex items-center justify-center transition-colors"
+          :class="isDone ? 'border-white bg-white/20' : 'border-white/50'"
+          title="完了"
+        >
+          <span v-if="isDone" class="text-white text-xs">✓</span>
+        </button>
+
         <button
           @click="toggleFavorite"
           class="shrink-0 p-1 rounded-lg transition-colors"
@@ -78,6 +93,7 @@ const toggleFavorite = () => {
           <p
             v-else
             class="chalk-text whitespace-pre-wrap"
+            :class="isDone ? 'line-through opacity-50' : ''"
             :style="{ color: chalkColors[color] || chalkColors.orange }"
           >
             {{ content }}

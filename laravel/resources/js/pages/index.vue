@@ -45,6 +45,15 @@ const favoriteMemo = async (id: number, isFavorite: boolean) => {
   fetchMemos();
 };
 
+const toggleDoneMemo = async (id: number, isDone: boolean) => {
+  await fetch(`/api/memos/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ is_done: isDone }),
+  });
+  fetchMemos();
+};
+
 onMounted(fetchMemos);
 </script>
 
@@ -58,6 +67,7 @@ onMounted(fetchMemos);
       @trashed="deleteMemo"
       @edited="editMemo"
       @favorited="favoriteMemo"
+      @toggled-done="toggleDoneMemo"
     />
   </div>
 </template>

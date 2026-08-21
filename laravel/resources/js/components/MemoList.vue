@@ -3,7 +3,7 @@ import DocumentSvg from './svgs/DocumentSvg.vue';
 import MemoItem from './MemoItem.vue';
 
 defineProps<{
-  memos: { id: number; content: string; created_at: string; is_favorite: boolean; color: string }[];
+  memos: { id: number; content: string; created_at: string; is_favorite: boolean; is_done: boolean; color: string }[];
 }>();
 
 const searchQuery = defineModel<string>('searchQuery');
@@ -12,6 +12,7 @@ const emit = defineEmits<{
   trashed: [id: number];
   edited: [id: number, content: string];
   favorited: [id: number, isFavorite: boolean];
+  toggledDone: [id: number, isDone: boolean];
 }>();
 </script>
 
@@ -43,10 +44,12 @@ const emit = defineEmits<{
           :content="memo.content"
           :created-at="memo.created_at"
           :is-favorite="memo.is_favorite"
+          :is-done="memo.is_done"
           :color="memo.color"
           @trashed="emit('trashed', $event)"
           @edited="(id, content) => emit('edited', id, content)"
           @favorited="(id, isFavorite) => emit('favorited', id, isFavorite)"
+          @toggled-done="(id, isDone) => emit('toggledDone', id, isDone)"
         />
       </TransitionGroup>
     </div>
